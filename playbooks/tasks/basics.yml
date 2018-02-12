@@ -1,4 +1,6 @@
-- name: install vim
-  yum: name=vim state=present
-- name: install nmap
-  yum: name=nmap state=present
+- name: install Basic Packages
+  yum: name={{item}} state=present
+  with_items:
+    - vim
+    - nmap
+    - wget

@@ -1,0 +1,4 @@
+- name: install vim
+  yum: name=vim state=present
+- name: install nmap
+  yum: name=nmap state=present

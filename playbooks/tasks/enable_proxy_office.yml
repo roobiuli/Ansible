@@ -1,0 +1,5 @@
+---
+- name: Setting office proxy
+  lineinfile:
+    dest: /etc/environment
+    line: "export http_proxy=http://10.74.42.16:8080"

@@ -1,5 +1,5 @@
 ---
 - hosts: localhost
   tasks:
-    - name: "Running borg was here"
-    - command: /bin/echo "Borg was here" > /tmp/bogtouch
+   - name: "Running borg was here"
+     command: /bin/echo "Borg was here" > /tmp/bogtouch

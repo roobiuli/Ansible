@@ -1,5 +1,31 @@
 ---
 - hosts: localhost
+  vars:
+    port: 80
+    domain: test.bs
   tasks:
-   - name: "Running borg was here"
-     command: /bin/echo "Borg was here" > /tmp/bogtouch
+   - name: "Create virtualhost dir /var/www/{{ domain }}"
+     file:
+       path: "/var/www/{{ domain }}"
+       state: directory
+       owner: www-data
+       group: www-data
+       mode: 0755
+   - name: "Installing Apache2"
+     apt: name=apache2 update_cache=yes state=latest
+   - name: enabled mod_rewrite
+     apache2_module: name=rewrite state=present
+     notify:
+      - Restart Apache2
+   - name: "Create Virtual Host"
+     template: src=playbooks/templates/apache2/virtualhost.conf dest=/etc/apache2/sites-available/{{ domain }}.conf
+   - name: "Setup index.html in  {{ domain }}"
+     template: src=playbooks/templates/apache2/index.html dest=/var/www/{{ domain }}/index.html
+   - name: a2ensite {{ domain }}
+     command: a2ensite {{ domain }}
+     notify:
+      - Restart Apache2
+
+  handlers:
+   - name: "Restart Apache2"
+     service: name=apache2 state=restarted
